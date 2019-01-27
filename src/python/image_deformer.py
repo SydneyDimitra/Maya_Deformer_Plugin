@@ -36,8 +36,16 @@ pixel_values = list(im.getdata())
 #print len(pixel_values)
 #print max(pixel_values)
 
+# clamping the values between 0 and 1
+clamped_values = []
+max_pixel_value = max(pixel_values)
+for value in pixel_values:
+    scaledValue = value / max_pixel_value
+    clamped_values.append(scaleValue)
 
 # deformation
-for i range(10):
-    for value in pixel_values:
-        cmds.setAttr("pPlaneShape1.pnts[{0}].pnty".format(i), value)
+i = 0
+for value in pixel_values:
+    cmds.setAttr("pPlaneShape1.pnts[{0}].pnty".format(i), value * max_height)
+    i += 1
+    
