@@ -1,51 +1,63 @@
+# Standart imports
 import maya.cmds as cmds
-
-filepath = "icons/heightmap.png"
-
-class TextureDeformer():
-  """ """
-  def __init__(self):
-  """ """
-  
-  def get_object():
-    
-  def import_image():
-  
-  def match_resolution():
-  
-  def apply_deformation(max_height):
-    """ max_height = 1 default value """
-
-
-#####################################
-
-plane = cmds.ls(selection = True)
-
-# read image
 from PIL import Image
-im=Image.open(filepath)
-print im.size 
-x, y = im.size
+  
+#filepath = "icons/heightmap.png"
 
-# resolution
-cmds.setAttr("polyPlane1.subdivisionsWidth", x)
-cmds.setAttr("polyPlane1.subdivisionsHeight", y)
+class ImageDeformer():
+  """Apply deformer to objects"""
+  def __init__(self):
+    """Class constructor."""
+    self.resolution = None
+  
+  def get_object(self):
+    """Get selected object.
+    Returns:
+    """
+    plane = cmds.ls(selection = True)
+    # check if polygon
+ 
+  def import_image(self, filepath):
+    """Import image from provided filepath.
+    Args:
+      filepath (str)
+    Returns:
+    """
+    im=Image.open(filepath)
+    x, y = im.size
+    pixel_values = list(im.getdata())
+  
+  def match_resolution(self):
+    """Match mesh subdivision with image resolution."""
 
-# read image pixel values
-pixel_values = list(im.getdata())
-#print len(pixel_values)
-#print max(pixel_values)
+    cmds.setAttr("polyPlane1.subdivisionsWidth", x)
+    cmds.setAttr("polyPlane1.subdivisionsHeight", y)
+  
+  def apply_deformation(max_height=1):
+    """Apply deformation.
+    Args:
+      max_height (float):
+    """
+    # clamping the values between 0 and 1
+    clamped_values = []
+    max_pixel_value = max(pixel_values)
+    for value in pixel_values:
+        scaledValue = value / max_pixel_value
+        clamped_values.append(scaleValue)
 
-# clamping the values between 0 and 1
-clamped_values = []
-max_pixel_value = max(pixel_values)
-for value in pixel_values:
-    scaledValue = value / max_pixel_value
-    clamped_values.append(scaleValue)
+    # deformation
+    i = 0
+    for value in pixel_values:
+        cmds.setAttr("pPlaneShape1.pnts[{0}].pnty".format(i), value * max_height)
+        i += 1
 
-# deformation
-i = 0
-for value in pixel_values:
-    cmds.setAttr("pPlaneShape1.pnts[{0}].pnty".format(i), value * max_height)
-    i += 1
     
+def main(filepath, max_height):
+  """Gets user inputs and connects deformer.
+  Args:
+    filepath (str):
+    max_height (float):
+  """
+  deform = ImageDeformer()
+  
+  
