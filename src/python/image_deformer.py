@@ -4,20 +4,14 @@ from PIL import Image
   
 #filepath = "icons/heightmap.png"
 
-class ImageDeformer():
+class ImageReader():
   """Apply deformer to objects"""
   def __init__(self):
     """Class constructor."""
-    self.resolution = None
-  
-  def get_object(self):
-    """Get selected object.
-    Returns:
-    """
-    plane = cmds.ls(selection = True)
-    # check if polygon
+    self.input_resolution = None
+    self.output_resolution = None
  
-  def import_image(self, filepath):
+  def read_image(self, filepath):
     """Import image from provided filepath.
     Args:
       filepath (str)
@@ -26,28 +20,36 @@ class ImageDeformer():
     im=Image.open(filepath)
     x, y = im.size
     pixel_values = list(im.getdata())
+
+  def normalise_pixel_values(self,pixel_values)
+    # clamping the values between 0 and 1
+    normalised_values = []
+    max_pixel_value = max(pixel_values)
+    for value in pixel_values:
+        scaled_value = value / max_pixel_value
+        cnormalised.append(scale_value)
+
+    
+class MeshDeformer():
+  """Apply deformer to object."""
+  def __init__(self):
+    """Class constructor."""
+    self.width_subdivision = None
+    self.height_subdivision = None
   
-  def match_resolution(self):
+  def match_resolution(self,x,y):
     """Match mesh subdivision with image resolution."""
 
     cmds.setAttr("polyPlane1.subdivisionsWidth", x)
     cmds.setAttr("polyPlane1.subdivisionsHeight", y)
   
-  def apply_deformation(max_height=1):
+  def apply_deformation(self, max_height=1, normalised_values):
     """Apply deformation.
     Args:
       max_height (float):
     """
-    # clamping the values between 0 and 1
-    clamped_values = []
-    max_pixel_value = max(pixel_values)
-    for value in pixel_values:
-        scaledValue = value / max_pixel_value
-        clamped_values.append(scaleValue)
-
-    # deformation
     i = 0
-    for value in pixel_values:
+    for value in normalised_values:
         cmds.setAttr("pPlaneShape1.pnts[{0}].pnty".format(i), value * max_height)
         i += 1
 
@@ -58,6 +60,9 @@ def main(filepath, max_height):
     filepath (str):
     max_height (float):
   """
-  deform = ImageDeformer()
-  
+  plane = cmds.ls(selection = True)
+  # check if polygon
+  image = ImageReader()
+  x,y = image.read_image()
+  plane = MeshDeformer()
   
