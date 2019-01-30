@@ -10,6 +10,7 @@ class ImageReader():
     """Class constructor."""
     self.input_resolution = None
     self.output_resolution = None
+    self.pixel_values = None
  
   def read_image(self, filepath):
     """Import image from provided filepath.
@@ -19,16 +20,20 @@ class ImageReader():
     """
     im=Image.open(filepath)
     x, y = im.size
-    pixel_values = list(im.getdata())
+    self.pixel_values = list(im.getdata())
 
-  def normalise_pixel_values(self,pixel_values)
+  def normalise_pixel_values(self)
+    """Normalise pixel values between 0 and 1. 
+    Returns:
+      normalised_vlaues (list):
+    """
     # clamping the values between 0 and 1
     normalised_values = []
-    max_pixel_value = max(pixel_values)
+    max_pixel_value = max(self.pixel_values)
     for value in pixel_values:
         scaled_value = value / max_pixel_value
-        cnormalised.append(scale_value)
-
+        normalised_values.append(scale_value)       
+    return normalised_values
     
 class MeshDeformer():
   """Apply deformer to object."""
@@ -64,5 +69,9 @@ def main(filepath, max_height):
   # check if polygon
   image = ImageReader()
   x,y = image.read_image()
+  
   plane = MeshDeformer()
+  plane.match_resolution(x,y)
+  plane.apply_deformation(max_height, image.normalise_pixel_values())
+  
   
